@@ -231,7 +231,9 @@ name('zones.index');
                             <div class="text-sm text-gray-400">Total Units</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-orange-400 mb-1">{{ round( \App\Models\Unit::all()->where("vacancy", "unavailable")->count() / \App\Models\Unit::all()->count() * 100 , 2) }}%</div>
+                            <div class="text-2xl font-bold text-orange-400 mb-1">
+                                {{ \App\Models\Unit::all()->count() > 0 ? round(\App\Models\Unit::all()->where('vacancy', 'unavailable')->count() / \App\Models\Unit::all()->count() * 100, 2) . '%' : 'No data' }}
+                            </div>
                             <div class="text-sm text-gray-400">Avg Occupancy</div>
                         </div>
                     </div>
