@@ -34,7 +34,7 @@ new class extends Component {
 
         // Close the modal after successful creation
         $this->dispatch('close-modal');
-        session()->flash('message', 'Zone created successfully!');
+        session()->flash('message', 'Company created successfully!');
     }
 
 };
@@ -51,13 +51,13 @@ name('zones.index');
             <div class="mb-8">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h1 class="text-3xl font-bold text-white">Property Zones</h1>
-                        <p class="text-sm text-gray-400 mt-2">Manage and organize your property zones across different locations</p>
+                        <h1 class="text-3xl font-bold text-white">Companies</h1>
+                        <p class="text-sm text-gray-400 mt-2">Manage and organize your Companies</p>
                     </div>
 
                     <!-- Add Zone Modal -->
                     <flux:modal name="add-zone" class="bg-gray-900">
-                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 max-w-md mx-auto">
+                        <div class="rounded-lg  max-w-md mx-auto">
                             <div class="space-y-6">
                                 <!-- Modal Header -->
                                 <div class="mb-6">
@@ -69,21 +69,21 @@ name('zones.index');
                                             </svg>
                                         </div>
                                         <flux:heading size="lg" class="text-white font-semibold">
-                                            Create New Zone
+                                            Create New Company
                                         </flux:heading>
                                     </div>
                                     <flux:text class="text-gray-300 text-sm leading-relaxed">
-                                        Add a new zone to organize your properties by location or category.
+                                        Add a new Company to organize your properties by location or category.
                                     </flux:text>
                                 </div>
 
                                 <!-- Form -->
                                 <form wire:submit="addZone" class="space-y-6">
                                     <flux:field>
-                                        <flux:label class="text-gray-300 font-medium">Zone Name</flux:label>
+                                        <flux:label class="text-gray-300 font-medium">Company Name</flux:label>
                                         <flux:input
                                             wire:model="name"
-                                            placeholder="Enter zone name (e.g., Downtown District, North Side)"
+                                            placeholder="Enter Company name"
                                             class="bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-green-500 focus:ring-green-500 mt-2"
                                         />
                                         <flux:error name="name" class="text-red-400 text-sm mt-1" />
@@ -106,7 +106,7 @@ name('zones.index');
                                             x-on:click="setTimeout(() => $flux.modal('add-zone').close(), 100)"
                                             class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 font-medium transition-colors shadow-lg"
                                         >
-                                            Create Zone
+                                            Create Company
                                         </flux:button>
                                     </div>
                                 </form>
@@ -121,7 +121,7 @@ name('zones.index');
                             variant="primary"
                             class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 font-medium rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl transform hover:-translate-y-0.5"
                         >
-                            Add Zone
+                            Add Company
                         </flux:button>
                     </flux:modal.trigger>
                 </div>
@@ -197,9 +197,9 @@ name('zones.index');
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-white mb-3">No zones created yet</h3>
+                    <h3 class="text-xl font-semibold text-white mb-3">No Companies created yet</h3>
                     <p class="text-gray-400 mb-8 max-w-md mx-auto">
-                        Get started by creating your first property zone. Zones help you organize and manage properties by location or category.
+                        Get started by creating your first Company. Companies help you organize and manage properties by location or category.
                     </p>
                     <flux:modal.trigger name="add-zone">
                         <flux:button
@@ -207,7 +207,7 @@ name('zones.index');
                             variant="primary"
                             class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 font-medium rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl"
                         >
-                            Create Your First Zone
+                            Create Your First company
                         </flux:button>
                     </flux:modal.trigger>
                 </div>
@@ -216,22 +216,22 @@ name('zones.index');
             <!-- Zone Statistics Overview -->
             @if(!$zones->isEmpty())
                 <div class="mt-12 bg-gray-800 rounded-lg border border-gray-700 p-6">
-                    <h2 class="text-lg font-semibold text-white mb-4">Zone Overview</h2>
+                    <h2 class="text-lg font-semibold text-white mb-4">Companies Overview</h2>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div class="text-center">
                             <div class="text-2xl font-bold text-green-400 mb-1">{{ $zones->count() }}</div>
-                            <div class="text-sm text-gray-400">Total Zones</div>
+                            <div class="text-sm text-gray-400">Total Companies</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-blue-400 mb-1">156</div>
+                            <div class="text-2xl font-bold text-blue-400 mb-1">{{ \App\Models\Building::all()->count()  }}</div>
                             <div class="text-sm text-gray-400">Total Buildings</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-purple-400 mb-1">642</div>
+                            <div class="text-2xl font-bold text-purple-400 mb-1">{{ \App\Models\Unit::all()->count() }}</div>
                             <div class="text-sm text-gray-400">Total Units</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-2xl font-bold text-orange-400 mb-1">94%</div>
+                            <div class="text-2xl font-bold text-orange-400 mb-1">{{ round( \App\Models\Unit::all()->where("vacancy", "unavailable")->count() / \App\Models\Unit::all()->count() * 100 , 2) }}%</div>
                             <div class="text-sm text-gray-400">Avg Occupancy</div>
                         </div>
                     </div>
